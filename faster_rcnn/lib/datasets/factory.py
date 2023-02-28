@@ -21,7 +21,7 @@ for year in ['2007', '2012']:
     for split in ['train', 'val', 'trainval', 'test']:
         name = 'voc_{}_{}'.format(year, split)
         __sets[name] = (lambda split=split, year=year: pascal_voc(split, year,
-                                                                  devkit_path='/path/to/voc/'))
+                                                                  devkit_path='/data/VOCdevkit'))
 
 # Set up coco_2014_<split>
 for year in ['2014']:

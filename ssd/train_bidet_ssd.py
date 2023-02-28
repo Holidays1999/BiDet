@@ -1,18 +1,6 @@
 import random
-import numpy as np
-import torch
 
 SEED = 1
-
-
-def set_seed(seed=1):
-    random.seed(seed)
-    np.random.seed(seed)
-    torch.manual_seed(seed)
-    torch.cuda.manual_seed_all(seed)
-
-
-set_seed(SEED)
 
 from data import *
 from utils.augmentations import SSDAugmentation
@@ -28,7 +16,18 @@ import torch.backends.cudnn as cudnn
 import torch.utils.data as data
 import argparse
 
-os.environ["CUDA_VISIBLE_DEVICES"] = '0, 1'
+np.warnings.filterwarnings('ignore', category=np.VisibleDeprecationWarning)
+
+
+def set_seed(seed=1):
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+
+
+set_seed(SEED)
+os.environ["CUDA_VISIBLE_DEVICES"] = '0'
 
 REGULARIZATION_LOSS_WEIGHT = 1.
 PRIOR_LOSS_WEIGHT = 1.
@@ -180,7 +179,7 @@ def train():
     data_loader = data.DataLoader(dataset, args.batch_size,
                                   num_workers=args.num_workers,
                                   shuffle=True, collate_fn=detection_collate,
-                                  pin_memory=True, drop_last=True)
+                                  pin_memory=True, drop_last=True, generator=torch.Generator("cuda"))
     # create batch iterator
     batch_iterator = iter(data_loader)
     for iteration in range(args.start_iter, cfg['max_iter']):

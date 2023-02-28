@@ -7,21 +7,20 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from lib.datasets.imdb import imdb
-import lib.datasets.ds_utils as ds_utils
-import os.path as osp
-import sys
-import os
-import numpy as np
-import scipy.sparse
-import pickle
 import json
+import os
+import os.path as osp
+import pickle
 import uuid
 
+import numpy as np
+import scipy.sparse
 # COCO API
 from pycocotools.coco import COCO
 from pycocotools.cocoeval import COCOeval
-from pycocotools import mask as COCOmask
+
+import lib.datasets.ds_utils as ds_utils
+from lib.datasets.imdb import imdb
 
 
 class coco(imdb):
@@ -33,7 +32,7 @@ class coco(imdb):
         # name, paths
         self._year = year
         self._image_set = image_set
-        self._data_path = "/path/to/coco/"
+        self._data_path = "/data/COCO2014"
         # load COCO API, classes, class <-> id mappings
         self._COCO = COCO(self._get_ann_file())
         cats = self._COCO.loadCats(self._COCO.getCatIds())

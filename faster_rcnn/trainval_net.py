@@ -4,9 +4,11 @@
 # Written by Jiasen Lu, Jianwei Yang, based on code from Ross Girshick
 # --------------------------------------------------------
 import random
+
 import numpy as np
 import torch
 
+np.warnings.filterwarnings('ignore', category=np.VisibleDeprecationWarning)
 SEED = 1
 
 
@@ -20,10 +22,8 @@ def set_seed(seed=1):
 set_seed(SEED)
 
 import os
-import sys
 import argparse
 import pprint
-import pdb
 import time
 
 from torch.autograd import Variable
@@ -33,9 +33,8 @@ from torch.utils.data.sampler import Sampler
 
 from lib.roi_data_layer.roidb import combined_roidb
 from lib.roi_data_layer.roibatchLoader import roibatchLoader
-from lib.model.utils.config import cfg, cfg_from_file, cfg_from_list, get_output_dir
-from lib.model.utils.net_utils import weights_normal_init, save_net, load_net, \
-    adjust_learning_rate, save_checkpoint, clip_gradient
+from lib.model.utils.config import cfg, cfg_from_file, cfg_from_list
+from lib.model.utils.net_utils import adjust_learning_rate
 
 from lib.model.faster_rcnn.bidet_resnet import bidet_resnet
 
@@ -235,7 +234,8 @@ if __name__ == '__main__':
                              training=True, trans=args.trans_img)
 
     dataloader = torch.utils.data.DataLoader(dataset, batch_size=args.batch_size,
-                                             sampler=sampler_batch, num_workers=args.num_workers)
+                                             sampler=sampler_batch, num_workers=args.num_workers,
+                                             generator=torch.Generator("cuda"))
 
     # initilize the tensor holder here.
     im_data = torch.FloatTensor(1)
@@ -356,9 +356,9 @@ if __name__ == '__main__':
 
             fasterRCNN.zero_grad()
             rois, cls_prob, bbox_pred, \
-            rpn_loss_cls, rpn_loss_bbox, \
-            RCNN_loss_cls, RCNN_loss_bbox, rois_label, \
-            rpn_prior_loss, rpn_reg_loss, head_prior_loss, head_reg_loss = \
+                rpn_loss_cls, rpn_loss_bbox, \
+                RCNN_loss_cls, RCNN_loss_bbox, rois_label, \
+                rpn_prior_loss, rpn_reg_loss, head_prior_loss, head_reg_loss = \
                 fasterRCNN(im_data, im_info, gt_boxes, num_boxes)
 
             loss = rpn_loss_cls.mean() + rpn_loss_bbox.mean() + RCNN_loss_cls.mean() + RCNN_loss_bbox.mean() + \

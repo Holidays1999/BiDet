@@ -5,17 +5,12 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import torch.utils.data as data
+import numpy as np
 import torch
+import torch.utils.data as data
 
 from lib.model.utils.config import cfg
-from lib.roi_data_layer.minibatch import get_minibatch, get_minibatch
-from lib.model.rpn.bbox_transform import bbox_transform_inv, clip_boxes
-
-import numpy as np
-import random
-import time
-import pdb
+from lib.roi_data_layer.minibatch import get_minibatch
 
 
 class roibatchLoader(data.Dataset):

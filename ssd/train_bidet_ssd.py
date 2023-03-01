@@ -199,8 +199,8 @@ def train():
                 REGULARIZATION_LOSS_WEIGHT = args.reg_weight
                 PRIOR_LOSS_WEIGHT = args.prior_weight
             step_index += 1
-            adjust_learning_rate(optimizer, args.gamma, step_index)
-            print("decay lr")
+            adjust_learning_rate(optimizer, args.lr * args.gamma ** step_index)
+            print("decay lr ", f"step is {iteration},  lr is {get_lr(optimizer)}")
 
         # load train data
         try:

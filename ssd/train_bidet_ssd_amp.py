@@ -1,7 +1,5 @@
 import random
 
-SEED = 1
-
 from data import *
 from utils.augmentations import SSDAugmentation
 from layers.modules import MultiBoxLoss
@@ -22,6 +20,8 @@ import warnings
 warnings.filterwarnings('ignore')
 
 np.warnings.filterwarnings('ignore', category=np.VisibleDeprecationWarning)
+
+SEED = 1
 
 
 def set_seed(seed=1):

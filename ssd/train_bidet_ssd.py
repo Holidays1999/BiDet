@@ -15,6 +15,9 @@ import torch.optim as optim
 import torch.backends.cudnn as cudnn
 import torch.utils.data as data
 import argparse
+import warnings
+
+warnings.filterwarnings('ignore')
 
 np.warnings.filterwarnings('ignore', category=np.VisibleDeprecationWarning)
 

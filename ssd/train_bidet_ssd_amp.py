@@ -17,6 +17,10 @@ import torch.utils.data as data
 from torch.cuda.amp import autocast, GradScaler
 import argparse
 
+import warnings
+
+warnings.filterwarnings('ignore')
+
 np.warnings.filterwarnings('ignore', category=np.VisibleDeprecationWarning)
 
 
@@ -338,7 +342,6 @@ def train():
         scaler.step(optimizer)
         scaler.update()
         optimizer.zero_grad()
-
 
         loss_l = loss_l.detach().cpu().item()
         loss_c = loss_c.detach().cpu().item()
